@@ -27,9 +27,12 @@ const theme = createTheme({
     black: palette.black,
     error: palette.error,
     success: palette.success,
+    redCorner: '#FF0000', // Added red color for corner
   },
 
   spacing: {
+    xxlN: -80,
+    xlN: -40,
     lN: -24,
     none: 0,
     xs: 4,
@@ -84,6 +87,11 @@ const theme = createTheme({
   breakpoints: {
     phone: 0,
     tablet: 768,
+  },
+
+  emptyState: {
+    background: 'white',
+    text: 'muted',
   },
 });
 

@@ -5,8 +5,8 @@ import { useIsFocused } from '@react-navigation/native';
 
 type Props = {
   name: string;
-  size: number;
-  color: string;
+  size?: number;
+  color?: string;
 };
 
 export const AnimatedIcon = ({ name, size, color }: Props) => {

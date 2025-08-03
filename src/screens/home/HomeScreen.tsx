@@ -10,18 +10,19 @@ import {
 } from 'react-native';
 import { RootStackParamList } from '../../stacks/RootStackParamList';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useCoffeeData } from './useCoffeeData';
 import Box from '../../designsystem/components/Box';
 import Text from '../../designsystem/components/Text';
 import FastImage from 'react-native-fast-image';
+import { useCoffeeData } from '../../api/fire/GetFamousCoffee';
+import { AnimatedIcon } from '../../AnimatedIcon';
 
 export const HomeScreen: React.FC = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  const coffeeData = useCoffeeData();
+  const { loading, data, error } = useCoffeeData();
 
-  if (coffeeData.loading) {
+  if (loading) {
     return (
       <Box alignItems="center" justifyContent="center" flex={1}>
         <Text>Loading...</Text>
@@ -29,16 +30,21 @@ export const HomeScreen: React.FC = () => {
     );
   }
 
-  if (coffeeData.error) {
-    return <Text>Error: {coffeeData.error}</Text>;
+  if (error) {
+    return (
+      <Box>
+        <AnimatedIcon name="error" />
+        <Text>Error: {error}</Text>
+      </Box>
+    );
   }
 
-  if (!coffeeData.data) {
+  if (!data) {
     return <Text>No coffee data available</Text>;
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.scroll}>
+    <ScrollView contentContainerStyle={{ padding: 16 }}>
       <Box
         backgroundColor="primary"
         height={200}
@@ -52,7 +58,7 @@ export const HomeScreen: React.FC = () => {
         />
       </Box>
 
-      {coffeeData.data.map(coffee => (
+      {data.map(coffee => (
         <Box
           key={coffee.id}
           backgroundColor="white"
@@ -77,9 +83,7 @@ export const HomeScreen: React.FC = () => {
                 resizeMode={FastImage.resizeMode.cover}
               />
               <Box flexDirection="column" flex={1} ml="m">
-                <Text style={styles.name} variant="body">
-                  {coffee.title}
-                </Text>
+                <Text variant="body">{coffee.title}</Text>
                 <Text numberOfLines={2} mt="xs">
                   {coffee.description}
                 </Text>
@@ -95,26 +99,3 @@ export const HomeScreen: React.FC = () => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  scroll: {},
-  headerBox: {
-    height: 50,
-    backgroundColor: '#f8f8f8',
-    borderRadius: 10,
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  card: {
-    marginBottom: 4,
-    backgroundColor: '#eee',
-    padding: 12,
-  },
-  name: {
-    fontWeight: 'bold',
-  },
-});

@@ -4,6 +4,8 @@ import { CoffeeModel } from '../api/getCoffeelist/CoffeeModel';
 export type RootStackParamList = {
   Home: undefined;
   Second: CommonParamList;
+  HookListScreen: undefined;
+  ReducerExampleScreen: undefined;
   CoffeeDetails: CoffeeModel; // Fixed typo from CoffeeDtails
 };
 
